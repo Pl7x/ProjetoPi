@@ -33,9 +33,13 @@ CREATE TABLE tb_Compra (
     FOREIGN KEY (id_Combustivel) REFERENCES tb_Combustivel(id_Combustivel)
 );
 
-INSERT INTO tb_Combustivel (no_Combustivel, cap_max, estoque_atual, preco_litro) VALUES
-('Gasolina Comum', 12000.00, 12000.00, 5.49),
-('Etanol', 15000.00, 15000.00, 4.19),
-('Diesel S10', 20000.00, 20000.00, 4.89),
-('GNV', 8000.00, 8000.00, 3.19),
-('Gasolina Aditivada', 10000.00, 10000.00, 5.79);
+select * from tb_compra
+
+INSERT INTO tb_Compra (id_Fun, id_Combustivel, qntd_Litros, valor_Pago, forma_pagamento) VALUES
+(1, 1, 50.00, 274.50, 'pix'),
+(2, 3, 100.00, 489.00, 'cartao'),
+(3, 2, 30.00, 173.70, 'dinheiro');
+
+
+
+select *from tb_Combustivel;
