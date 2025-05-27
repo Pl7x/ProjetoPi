@@ -33,25 +33,9 @@ CREATE TABLE tb_Compra (
     FOREIGN KEY (id_Combustivel) REFERENCES tb_Combustivel(id_Combustivel)
 );
 
-CREATE OR REPLACE FUNCTION atualizar_estoque()
-RETURNS TRIGGER AS $$
-BEGIN
-    IF (SELECT estoque_atual FROM tb_Combustivel WHERE id_Combustivel = NEW.id_Combustivel) - NEW.qntd_Litros < 0 THEN
-        RAISE EXCEPTION 'Estoque insuficiente para o combustível ID %', NEW.id_Combustivel;
-    END IF;
-
-    UPDATE tb_Combustivel
-    SET estoque_atual = estoque_atual - NEW.qntd_Litros
-    WHERE id_Combustivel = NEW.id_Combustivel;
-
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER trigger_atualizar_estoque
-AFTER INSERT ON tb_Compra
-FOR EACH ROW
-EXECUTE FUNCTION atualizar_estoque();
-
-
-
+INSERT INTO tb_Combustivel (no_Combustivel, cap_max, estoque_atual, preco_litro) VALUES
+('Gasolina Comum', 12000.00, 12000.00, 5.49),
+('Etanol', 15000.00, 15000.00, 4.19),
+('Diesel S10', 20000.00, 20000.00, 4.89),
+('GNV', 8000.00, 8000.00, 3.19),
+('Gasolina Aditivada', 10000.00, 10000.00, 5.79);
