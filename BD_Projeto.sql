@@ -33,7 +33,10 @@ CREATE TABLE tb_Compra (
     FOREIGN KEY (id_Combustivel) REFERENCES tb_Combustivel(id_Combustivel)
 );
 
-select * from tb_compra
+select c.qntd_litros,co.preco_litro,(qntd_litros *   preco_litro) total  from tb_compra c
+join tb_funcionario p on c.id_fun = p.id_fun
+join tb_combustivel co  on c.id_combustivel = co.id_combustivel
+
 
 INSERT INTO tb_Compra (id_Fun, id_Combustivel, qntd_Litros, valor_Pago, forma_pagamento) VALUES
 (1, 1, 50.00, 274.50, 'pix'),
