@@ -43,6 +43,8 @@ INSERT INTO tb_Compra (id_Fun, id_Combustivel, qntd_Litros, valor_Pago, forma_pa
 (2, 3, 100.00, 489.00, 'cartao'),
 (3, 2, 30.00, 173.70, 'dinheiro');
 
-
+--FAZER!!
+--ALTER TABLE tb_Funcionario
+--ALTER COLUMN senha_Fun TYPE VARCHAR(8);
 
 select *from tb_Combustivel;
