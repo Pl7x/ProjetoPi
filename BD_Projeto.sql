@@ -7,7 +7,7 @@ CREATE TABLE tb_Funcionario (
     tel_Fun VARCHAR(15),
     end_Fun VARCHAR(100) NOT NULL,
     sexo_Fun CHAR(1) NOT NULL CHECK (sexo_Fun IN ('F','M')),
-    senha_Fun VARCHAR(5) NOT NULL,
+    senha_Fun VARCHAR(8) NOT NULL,
     salario DECIMAL(10,2) NOT NULL,
     dt_CF TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     Status BOOLEAN NOT NULL DEFAULT TRUE
