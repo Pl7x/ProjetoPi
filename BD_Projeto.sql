@@ -2,7 +2,7 @@ CREATE TABLE tb_Funcionario (
     id_Fun SERIAL PRIMARY KEY,
     no_Fun VARCHAR(50) NOT NULL,
     cpf_Fun VARCHAR(14) UNIQUE NOT NULL,
-    email_Fun VARCHAR(50),
+    cargo_Fun VARCHAR(20),
     nasc_Fun DATE NOT NULL,
     tel_Fun VARCHAR(15),
     end_Fun VARCHAR(100) NOT NULL,
