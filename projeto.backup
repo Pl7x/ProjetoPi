@@ -1,0 +1,367 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 16.2
+-- Dumped by pg_dump version 16.2
+
+-- Started on 2025-06-06 20:45:15
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 218 (class 1259 OID 16583)
+-- Name: tb_combustivel; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tb_combustivel (
+    id_combustivel integer NOT NULL,
+    no_combustivel character varying(50) NOT NULL,
+    cap_max numeric(10,2) NOT NULL,
+    estoque_atual numeric(10,2) NOT NULL,
+    preco_litro numeric(10,2) NOT NULL
+);
+
+
+ALTER TABLE public.tb_combustivel OWNER TO postgres;
+
+--
+-- TOC entry 217 (class 1259 OID 16582)
+-- Name: tb_combustivel_id_combustivel_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.tb_combustivel_id_combustivel_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.tb_combustivel_id_combustivel_seq OWNER TO postgres;
+
+--
+-- TOC entry 4816 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: tb_combustivel_id_combustivel_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.tb_combustivel_id_combustivel_seq OWNED BY public.tb_combustivel.id_combustivel;
+
+
+--
+-- TOC entry 220 (class 1259 OID 16609)
+-- Name: tb_compra; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tb_compra (
+    id_compra integer NOT NULL,
+    id_fun integer NOT NULL,
+    id_combustivel integer NOT NULL,
+    qntd_litros numeric(10,2) NOT NULL,
+    valor_pago numeric(10,2) NOT NULL,
+    forma_pagamento character varying(10) NOT NULL,
+    dt_venda timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT tb_compra_forma_pagamento_check CHECK (((forma_pagamento)::text = ANY ((ARRAY['DINHEIRO'::character varying, 'PIX'::character varying, 'CARTÃO'::character varying])::text[])))
+);
+
+
+ALTER TABLE public.tb_compra OWNER TO postgres;
+
+--
+-- TOC entry 219 (class 1259 OID 16608)
+-- Name: tb_compra_id_compra_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.tb_compra_id_compra_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.tb_compra_id_compra_seq OWNER TO postgres;
+
+--
+-- TOC entry 4817 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: tb_compra_id_compra_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.tb_compra_id_compra_seq OWNED BY public.tb_compra.id_compra;
+
+
+--
+-- TOC entry 216 (class 1259 OID 16571)
+-- Name: tb_funcionario; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tb_funcionario (
+    id_fun integer NOT NULL,
+    no_fun character varying(50) NOT NULL,
+    cpf_fun character varying(14) NOT NULL,
+    cargo_fun character varying(20),
+    nasc_fun date NOT NULL,
+    tel_fun character varying(15),
+    end_fun character varying(100) NOT NULL,
+    sexo_fun character(1) NOT NULL,
+    senha_fun character varying(8) NOT NULL,
+    salario numeric(10,2) NOT NULL,
+    dt_cf timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    status boolean DEFAULT true NOT NULL,
+    CONSTRAINT tb_funcionario_sexo_fun_check CHECK ((sexo_fun = ANY (ARRAY['F'::bpchar, 'M'::bpchar])))
+);
+
+
+ALTER TABLE public.tb_funcionario OWNER TO postgres;
+
+--
+-- TOC entry 215 (class 1259 OID 16570)
+-- Name: tb_funcionario_id_fun_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.tb_funcionario_id_fun_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.tb_funcionario_id_fun_seq OWNER TO postgres;
+
+--
+-- TOC entry 4818 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: tb_funcionario_id_fun_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.tb_funcionario_id_fun_seq OWNED BY public.tb_funcionario.id_fun;
+
+
+--
+-- TOC entry 4647 (class 2604 OID 16586)
+-- Name: tb_combustivel id_combustivel; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tb_combustivel ALTER COLUMN id_combustivel SET DEFAULT nextval('public.tb_combustivel_id_combustivel_seq'::regclass);
+
+
+--
+-- TOC entry 4648 (class 2604 OID 16612)
+-- Name: tb_compra id_compra; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tb_compra ALTER COLUMN id_compra SET DEFAULT nextval('public.tb_compra_id_compra_seq'::regclass);
+
+
+--
+-- TOC entry 4644 (class 2604 OID 16574)
+-- Name: tb_funcionario id_fun; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tb_funcionario ALTER COLUMN id_fun SET DEFAULT nextval('public.tb_funcionario_id_fun_seq'::regclass);
+
+
+--
+-- TOC entry 4808 (class 0 OID 16583)
+-- Dependencies: 218
+-- Data for Name: tb_combustivel; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tb_combustivel (id_combustivel, no_combustivel, cap_max, estoque_atual, preco_litro) FROM stdin;
+1	Gasolina Comum	10000.00	10000.00	5.49
+2	Etanol	8000.00	8000.00	3.79
+3	Diesel S10	12000.00	12000.00	6.19
+4	Gasolina Aditivada	15000.00	9000.00	5.79
+6	Diesel S500	22000.00	17000.00	4.79
+\.
+
+
+--
+-- TOC entry 4810 (class 0 OID 16609)
+-- Dependencies: 220
+-- Data for Name: tb_compra; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tb_compra (id_compra, id_fun, id_combustivel, qntd_litros, valor_pago, forma_pagamento, dt_venda) FROM stdin;
+41	1	1	40.00	200.00	DINHEIRO	2025-06-06 20:33:33.551849
+42	2	2	35.00	175.00	PIX	2025-06-06 20:33:33.551849
+43	3	3	30.00	150.00	CARTÃO	2025-06-06 20:33:33.551849
+44	4	4	25.00	125.00	DINHEIRO	2025-06-06 20:33:33.551849
+45	5	2	50.00	250.00	PIX	2025-06-06 20:33:33.551849
+46	6	1	45.00	225.00	CARTÃO	2025-06-06 20:33:33.551849
+47	7	2	60.00	300.00	DINHEIRO	2025-06-06 20:33:33.551849
+48	8	3	55.00	275.00	PIX	2025-06-06 20:33:33.551849
+49	9	4	42.00	210.00	CARTÃO	2025-06-06 20:33:33.551849
+50	10	1	48.00	240.00	DINHEIRO	2025-06-06 20:33:33.551849
+51	11	1	36.00	180.00	PIX	2025-06-06 20:33:33.551849
+52	12	2	28.00	140.00	CARTÃO	2025-06-06 20:33:33.551849
+53	13	3	33.00	165.00	DINHEIRO	2025-06-06 20:33:33.551849
+54	14	4	39.00	195.00	PIX	2025-06-06 20:33:33.551849
+55	15	4	44.00	220.00	CARTÃO	2025-06-06 20:33:33.551849
+56	16	1	52.00	260.00	DINHEIRO	2025-06-06 20:33:33.551849
+57	17	2	46.00	230.00	PIX	2025-06-06 20:33:33.551849
+58	18	3	30.00	150.00	CARTÃO	2025-06-06 20:33:33.551849
+59	19	4	37.00	185.00	DINHEIRO	2025-06-06 20:33:33.551849
+60	20	2	29.00	145.00	PIX	2025-06-06 20:33:33.551849
+61	21	1	41.00	205.00	CARTÃO	2025-06-06 20:33:33.551849
+62	22	2	54.00	270.00	DINHEIRO	2025-06-06 20:33:33.551849
+63	23	3	38.00	190.00	PIX	2025-06-06 20:33:33.551849
+64	1	4	43.00	215.00	CARTÃO	2025-06-06 20:33:33.551849
+65	2	2	31.00	155.00	DINHEIRO	2025-06-06 20:33:33.551849
+66	3	1	47.00	235.00	PIX	2025-06-06 20:33:33.551849
+67	4	2	60.00	300.00	CARTÃO	2025-06-06 20:33:33.551849
+68	5	3	40.00	200.00	DINHEIRO	2025-06-06 20:33:33.551849
+69	6	4	34.00	170.00	PIX	2025-06-06 20:33:33.551849
+70	7	3	49.00	245.00	CARTÃO	2025-06-06 20:33:33.551849
+71	8	1	27.00	135.00	DINHEIRO	2025-06-06 20:33:33.551849
+72	9	2	32.00	160.00	PIX	2025-06-06 20:33:33.551849
+73	10	3	56.00	280.00	CARTÃO	2025-06-06 20:33:33.551849
+74	11	4	38.00	190.00	DINHEIRO	2025-06-06 20:33:33.551849
+75	12	2	35.00	175.00	PIX	2025-06-06 20:33:33.551849
+76	13	1	43.00	215.00	CARTÃO	2025-06-06 20:33:33.551849
+77	14	2	50.00	250.00	DINHEIRO	2025-06-06 20:33:33.551849
+78	15	3	36.00	180.00	PIX	2025-06-06 20:33:33.551849
+79	16	4	44.00	220.00	CARTÃO	2025-06-06 20:33:33.551849
+80	17	4	29.00	145.00	DINHEIRO	2025-06-06 20:33:33.551849
+\.
+
+
+--
+-- TOC entry 4806 (class 0 OID 16571)
+-- Dependencies: 216
+-- Data for Name: tb_funcionario; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tb_funcionario (id_fun, no_fun, cpf_fun, cargo_fun, nasc_fun, tel_fun, end_fun, sexo_fun, senha_fun, salario, dt_cf, status) FROM stdin;
+1	João Silva	123.456.789-00	Atendente	1990-05-15	(11)91234-5678	Rua A, 123	M	senha123	2500.00	2025-06-06 19:30:24.237887	t
+2	Maria Oliveira	987.654.321-00	Gerente	1985-08-20	(21)99876-5432	Av. B, 456	F	senha456	4200.00	2025-06-06 19:30:24.237887	t
+3	Carlos Lima	456.789.123-00	Frentista	1992-03-10	(31)93456-7890	Rua C, 789	M	senha789	1800.00	2025-06-06 19:30:24.237887	f
+4	Daniel Araújo	101.202.303-44	Frentista	1991-11-22	(11)98888-1111	Rua U, 1818	M	daniel01	2200.00	2025-06-06 20:19:37.346262	t
+5	Priscila Moreira	202.303.404-55	Atendente	1994-02-14	(21)97777-2222	Av. V, 1919	F	priscila	2500.00	2025-06-06 20:19:37.346262	t
+6	Thiago Pires	303.404.505-66	Frentista	1993-06-10	(31)96666-3333	Rua W, 2020	M	thiago12	2100.00	2025-06-06 20:19:37.346262	t
+7	Débora Fernandes	404.505.606-77	Supervisora	1987-03-25	(41)95555-4444	Av. X, 2121	F	debora34	3400.00	2025-06-06 20:19:37.346262	t
+8	Ricardo Teixeira	505.606.707-88	Atendente	1996-08-18	(51)94444-5555	Rua Y, 2222	M	ricardo7	2450.00	2025-06-06 20:19:37.346262	t
+9	Cristiane Lopes	606.707.808-99	Frentista	1995-12-30	(61)93333-6666	Av. Z, 2323	F	crislop8	2150.00	2025-06-06 20:19:37.346262	t
+10	Luiz Henrique	707.808.909-00	Gerente	1986-10-01	(71)92222-7777	Rua Alfa, 2424	M	luizhen9	4600.00	2025-06-06 20:19:37.346262	t
+11	Aline Barbosa	808.909.010-11	Atendente	1992-07-03	(81)91111-8888	Av. Beta, 2525	F	aline123	2500.00	2025-06-06 20:19:37.346262	t
+12	Marcos Tavares	909.010.121-22	Frentista	1990-04-28	(91)90000-9999	Rua Gama, 2626	M	marcosta	2200.00	2025-06-06 20:19:37.346262	t
+13	Natália Soares	010.121.232-33	Supervisora	1985-09-16	(31)98877-0000	Av. Delta, 2727	F	natsoar9	3550.00	2025-06-06 20:19:37.346262	t
+14	Renato Queiroz	111.222.111-44	Frentista	1994-06-12	(11)97766-1112	Rua Epsilon, 2828	M	renque12	2150.00	2025-06-06 20:19:37.346262	t
+15	Tatiane Ribeiro	222.333.222-55	Atendente	1997-01-20	(21)96655-2223	Av. Zeta, 2929	F	tati3210	2400.00	2025-06-06 20:19:37.346262	t
+16	Jefferson Melo	333.444.333-66	Frentista	1988-08-14	(31)95544-3334	Rua Eta, 3030	M	jeff1234	2250.00	2025-06-06 20:19:37.346262	t
+17	Michele Duarte	444.555.444-77	Gerente	1983-12-11	(41)94433-4445	Av. Theta, 3131	F	michdu88	4750.00	2025-06-06 20:19:37.346262	t
+18	Gustavo Almeida	555.666.555-88	Atendente	1995-03-27	(51)93322-5556	Rua Iota, 3232	M	gustav23	2450.00	2025-06-06 20:19:37.346262	t
+19	Vanessa Cardoso	666.777.666-99	Frentista	1996-10-19	(61)92211-6667	Av. Kappa, 3333	F	vaness77	2200.00	2025-06-06 20:19:37.346262	t
+20	Henrique Silva	777.888.777-00	Frentista	1991-05-06	(71)91100-7778	Rua Lambda, 3434	M	henrsilv	2150.00	2025-06-06 20:19:37.346262	t
+21	Elaine Nascimento	888.999.888-11	Supervisora	1984-11-08	(81)90099-8889	Av. Mu, 3535	F	elainena	3600.00	2025-06-06 20:19:37.346262	t
+22	Leandro Farias	999.000.999-22	Atendente	1993-04-21	(91)98888-9990	Rua Nu, 3636	M	leandfar	2500.00	2025-06-06 20:19:37.346262	t
+23	Roberta Braga	000.111.000-33	Frentista	1998-02-02	(31)97777-0001	Av. Xi, 3737	F	robraga9	2100.00	2025-06-06 20:19:37.346262	t
+\.
+
+
+--
+-- TOC entry 4819 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: tb_combustivel_id_combustivel_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tb_combustivel_id_combustivel_seq', 7, true);
+
+
+--
+-- TOC entry 4820 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: tb_compra_id_compra_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tb_compra_id_compra_seq', 80, true);
+
+
+--
+-- TOC entry 4821 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: tb_funcionario_id_fun_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tb_funcionario_id_fun_seq', 23, true);
+
+
+--
+-- TOC entry 4657 (class 2606 OID 16588)
+-- Name: tb_combustivel tb_combustivel_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tb_combustivel
+    ADD CONSTRAINT tb_combustivel_pkey PRIMARY KEY (id_combustivel);
+
+
+--
+-- TOC entry 4659 (class 2606 OID 16616)
+-- Name: tb_compra tb_compra_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tb_compra
+    ADD CONSTRAINT tb_compra_pkey PRIMARY KEY (id_compra);
+
+
+--
+-- TOC entry 4653 (class 2606 OID 16581)
+-- Name: tb_funcionario tb_funcionario_cpf_fun_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tb_funcionario
+    ADD CONSTRAINT tb_funcionario_cpf_fun_key UNIQUE (cpf_fun);
+
+
+--
+-- TOC entry 4655 (class 2606 OID 16579)
+-- Name: tb_funcionario tb_funcionario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tb_funcionario
+    ADD CONSTRAINT tb_funcionario_pkey PRIMARY KEY (id_fun);
+
+
+--
+-- TOC entry 4660 (class 2606 OID 16622)
+-- Name: tb_compra tb_compra_id_combustivel_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tb_compra
+    ADD CONSTRAINT tb_compra_id_combustivel_fkey FOREIGN KEY (id_combustivel) REFERENCES public.tb_combustivel(id_combustivel);
+
+
+--
+-- TOC entry 4661 (class 2606 OID 16617)
+-- Name: tb_compra tb_compra_id_fun_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tb_compra
+    ADD CONSTRAINT tb_compra_id_fun_fkey FOREIGN KEY (id_fun) REFERENCES public.tb_funcionario(id_fun);
+
+
+-- Completed on 2025-06-06 20:45:20
+
+--
+-- PostgreSQL database dump complete
+--
+
